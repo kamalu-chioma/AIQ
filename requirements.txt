@@ -1,0 +1,7 @@
+Flask
+flask_socketio
+openai
+python-dotenv
+requests
+selenium
+webdriver-manager

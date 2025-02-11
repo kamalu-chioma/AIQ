@@ -1,0 +1,33 @@
+<html> 
+<head>
+    <title>Pre-modal</title>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <!-- 🌟 Pre-Screen Modal (User Setup) -->
+<div class="prescreen-container" id="prescreen">
+    <h1>Welcome to <span style="color: #750385;">AetherIQ</span></h1>
+    <p>Set up your profile before proceeding.</p>
+
+    <label>Enter Your Name:</label>
+    <br> <br>
+    <input type="text" id="user-name" placeholder="Your name..." required> 
+    <br><br>
+
+    <label>Select Avatar:</label>
+    <select id="avatar">
+        <option value="👤">👤 Default</option>
+        <option value="🦊">🦊 Fox</option>
+        <option value="🐼">🐼 Panda</option>
+        <option value="🐧">🐧 Penguin</option>
+    </select>
+    <br><br>
+
+
+    <button class="proceed-btn" onclick="saveUserDetails()">Proceed</button>
+</div>
+
+</body>
+</html>

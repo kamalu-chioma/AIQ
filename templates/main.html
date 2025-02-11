@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trading Chatbot</title>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Link to FontAwesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+
+    <!-- 🌟 Chat Container (Hidden Until Pre-Screen is Done) -->
+    <div class="chat-container hidden" id="chat-app">
+        
+        <!-- Sidebar for Saved Chats -->
+        <div class="sidebar">
+                <div class="sidebar-logo" style="font-size: 36px;">
+                    <img src="static/assets/aiq_origin.svg"alt="AIQ Logo">  AIQ 
+                </div>
+                <hr>
+            <h3><i class="fas fa-comments"></i> Chat History</h3>  <!-- Chat bubble icon -->
+            
+            <div id="chat-history"></div>
+            <button onclick="newChat()">+ New Chat</button>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat-box-wrapper">
+            <!-- Editable Chat Title with Pencil Icon -->
+            <h2>
+                <span id="chat-title-span">
+                    <input type="text" id="chat-title" class="chat-title" value="New Chat" disabled />
+                </span>
+                <button id="edit-title-btn" onclick="editChatTitle()" class="edit-title-btn">
+                    <i class="fas fa-pencil-alt"></i>  <!-- Pencil icon to edit -->
+                </button>
+            </h2>
+
+            
+
+            <!-- Chat Box -->
+            <div class="chat-box" id="chat-box"></div>
+            <br> <br>
+
+            <!-- Chat Input & Send Button -->
+            <div class="input-section">
+
+                <input type="text" id="chat-input" class="chat-input" placeholder="Ask AIQ ..." />
+                <button class="send-btn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>  <!-- Send icon -->
+                </button>
+            </div>
+            
+            
+
+    <div class="avatar-section hidden" id="avatar-section">
+        <div id="avatar-display">👤</div>  <!-- Keep the avatar emoji unchanged -->
+    </div>
+    
+
+</body>
+</html>
+
