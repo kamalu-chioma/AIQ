@@ -252,3 +252,19 @@ body {
     width: 40px;
     margin-top: 3px;
 }
+
+
+
+/* 🎯 Ensure Pre-Screen Modal is Centered on Mobile */
+@media screen and (max-width: 768px) {
+    .prescreen-container {
+        width: 90%;  /* Ensure it doesn’t take full width */
+        max-width: 350px;  /* Limit maximum width */
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);  /* Keep it centered */
+        padding: 20px;
+        text-align: center;
+    }
+}
+
