@@ -1,12 +1,12 @@
 import os
 import requests
 import openai
+import time
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-import time
 
 # ✅ Load environment variables
 load_dotenv()
@@ -17,7 +17,8 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 def get_crypto_data(crypto_name):
     """
     Fetches real-time cryptocurrency data from CoinGecko API.
-    Falls back to CoinDesk web scraping if CoinGecko fails.
+    If CoinGecko fails, it falls back to CoinDesk scraping.
+    If CoinDesk also fails, it scrapes Google Search.
     """
     try:
         url = f"{COINGECKO_API_URL}/simple/price"
@@ -37,23 +38,24 @@ def get_crypto_data(crypto_name):
                 "price": f"${crypto_data['usd']:,.2f}",
                 "market_cap": f"${crypto_data['usd_market_cap']:,.2f}",
                 "24h_volume": f"${crypto_data['usd_24h_vol']:,.2f}",
-                "24h_change": f"{crypto_data['usd_24h_change']:.2f}%"
+                "24h_change": f"{crypto_data['usd_24h_change']:.2f}%",
+                "source": "CoinGecko"
             }
         else:
-            print(f"CoinGecko failed for {crypto_name}. Falling back to CoinDesk.")
+            print(f"❌ CoinGecko API failed for {crypto_name}. Trying CoinDesk...")
             return fetch_coin_info_from_web(crypto_name)
 
     except Exception as e:
         print(f"❌ CoinGecko API Error: {e}")
         return fetch_coin_info_from_web(crypto_name)
 
-# ✅ Scrape CoinDesk for Crypto Price (Fallback)
+# ✅ Scrape CoinDesk for Crypto Price (First Fallback)
 def fetch_coin_info_from_web(coin_name):
     """
     Uses Selenium to scrape CoinDesk for cryptocurrency price when CoinGecko API fails.
+    If CoinDesk also fails, it falls back to Google Search.
     """
     try:
-        # Configure Selenium WebDriver (Headless Mode)
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")
         options.add_argument("--disable-gpu")
@@ -62,28 +64,68 @@ def fetch_coin_info_from_web(coin_name):
 
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-        # CoinDesk Price URL
         url = f"https://www.coindesk.com/price/{coin_name.lower()}"
         driver.get(url)
 
-        time.sleep(3)  # Allow time for page to load
+        time.sleep(3)  # Allow time for the page to load
 
         try:
             price_element = driver.find_element(By.XPATH, '//div[contains(@class, "price-large")]')
             price = price_element.text
         except Exception as e:
             print(f"❌ Error finding price element on CoinDesk: {e}")
+            price = None
+
+        driver.quit()
+
+        if price:
+            return {
+                "price": price,
+                "source": "CoinDesk"
+            }
+        else:
+            print(f"❌ CoinDesk failed for {coin_name}. Trying Google Search...")
+            return fetch_price_from_google(coin_name)
+
+    except Exception as e:
+        print(f"❌ CoinDesk Scraping Error: {e}")
+        return fetch_price_from_google(coin_name)
+
+# ✅ Scrape Google Search for Crypto Price (Final Fallback)
+def fetch_price_from_google(coin_name):
+    """
+    Uses Selenium to scrape Google Search for cryptocurrency price when both CoinGecko and CoinDesk fail.
+    """
+    try:
+        options = webdriver.ChromeOptions()
+        options.add_argument("--headless")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+        search_url = f"https://www.google.com/search?q={coin_name}+price+in+usd"
+        driver.get(search_url)
+
+        time.sleep(3)  # Allow time for the page to load
+
+        try:
+            price_element = driver.find_element(By.XPATH, "//div[@class='BNeawe iBp4i AP7Wnd']")
+            price = price_element.text
+        except Exception as e:
+            print(f"❌ Error finding price element on Google Search: {e}")
             price = "Price not found"
 
         driver.quit()
 
         return {
             "price": price,
-            "source": "CoinDesk"
+            "source": "Google Search"
         }
 
     except Exception as e:
-        print(f"❌ CoinDesk Scraping Error: {e}")
+        print(f"❌ Google Scraping Error: {e}")
         return None
 
 # ✅ Fetch Trending Cryptos from CoinGecko
@@ -113,7 +155,7 @@ def get_ai_response(user_message, coin_data=None):
             ai_prompt = f"""
             You are a cryptocurrency expert providing **real-time insights**.
 
-            **Crypto Update:**
+            **Crypto Update (Source: {coin_data['source']}):**
             - **Price:** {coin_data['price']}
             - **Market Cap:** {coin_data.get('market_cap', 'N/A')}
             - **24h Volume:** {coin_data.get('24h_volume', 'N/A')}
@@ -159,7 +201,7 @@ def handle_chat_query(user_message):
         crypto_data = get_crypto_data(asset)
 
         if crypto_data:
-            return f"📈 **{asset.upper()} Price:** {crypto_data['price']}\n" \
+            return f"📈 **{asset.upper()} Price (Source: {crypto_data['source']}):** {crypto_data['price']}\n" \
                    f"💰 **Market Cap:** {crypto_data.get('market_cap', 'N/A')}\n" \
                    f"🔄 **24h Volume:** {crypto_data.get('24h_volume', 'N/A')}\n" \
                    f"📊 **24h Change:** {crypto_data.get('24h_change', 'N/A')}"
