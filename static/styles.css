@@ -255,16 +255,27 @@ body {
 
 
 
-/* 🎯 Ensure Pre-Screen Modal is Centered on Mobile */
+/* /* 🎯 Ensure Pre-Screen Modal is Centered on Mobile */
+/* @media screen and (max-width: 768px) {
+/*     .prescreen-container { */
+/*         width: 90%;  /* Ensure it doesn’t take full width */
+/*         max-width: 350px;  /* Limit maximum width */ 
+/*         left: 50%;
+        top: 50%; */ 
+/*         transform: translate(-50%, -50%);  /* Keep it centered */
+/*         padding: 20px; */
+/*         text-align: center; */ 
+    
+/* } */
 @media screen and (max-width: 768px) {
     .prescreen-container {
-        width: 90%;  /* Ensure it doesn’t take full width */
-        max-width: 350px;  /* Limit maximum width */
+        width: 95%;  /* Slightly increase width for better visibility */
+        max-width: 400px;  /* Increase max width for better usability */
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%);  /* Keep it centered */
-        padding: 20px;
+        transform: translate(-50%, -50%);
+        padding: 25px;
         text-align: center;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);  /* Add slight shadow for focus effect */
+        transition: transform 0.2s ease-in-out; /* Smooth animation for better user experience */
     }
-}
-
