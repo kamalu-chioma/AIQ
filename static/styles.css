@@ -269,8 +269,8 @@ body {
 /* } */
 @media screen and (max-width: 768px) {
     .prescreen-container {
-        width: 95%;  /* Slightly increase width for better visibility */
-        max-width: 400px;  /* Increase max width for better usability */
+        width: 100%%;  
+        max-width: none;  
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
