@@ -310,7 +310,7 @@ body {
     } */
 
     /* 📝 Chat Box Adjustments */
-    .chat-box-wrapper {
+/*     .chat-box-wrapper {
         width: 100%;
         padding: 10px;
         height: auto;
@@ -319,9 +319,9 @@ body {
     .chat-box {
         max-height: 300px; 
     }
-
+ */
     /* 💬 Input Section Adjustments */
-    .input-section {
+/*     .input-section {
         flex-direction: row;
         padding: 5px;
     }
@@ -333,12 +333,12 @@ body {
 
     .send-btn {
         padding: 8px;
-    }
+    } */
 
 
 
     /* 🧑‍🎨 Avatar Adjustments */
-    .avatar-section {
+/*     .avatar-section {
         bottom: 5px;
         left: 5px;
         width: 40px;
@@ -347,5 +347,5 @@ body {
 
     #avatar-display {
         font-size: 30px;
-    }
+    } */
 }
