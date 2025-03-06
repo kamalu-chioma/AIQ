@@ -279,3 +279,77 @@ body {
         box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);  /* Add slight shadow for focus effect */
         transition: transform 0.2s ease-in-out; /* Smooth animation for better user experience */
     }
+
+
+/* media queries for phones and tablets for the main app (chatbot):  */
+@media screen and (max-width: 768px) {
+    body {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .chat-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    /* 📂 Sidebar Adjustments for Small Screens */
+    .sidebar {
+        width: 100%; /* Make sidebar full width */
+        height: auto;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .sidebar-logo img {
+        width: 30px; /* Reduce logo size for better fit */
+    }
+
+    .sidebar h3 {
+        font-size: 16px;
+    }
+
+    /* 📝 Chat Box Adjustments */
+    .chat-box-wrapper {
+        width: 100%;
+        padding: 10px;
+        height: auto;
+    }
+
+    .chat-box {
+        max-height: 300px; /* Reduce height for smaller screens */
+    }
+
+    /* 💬 Input Section Adjustments */
+    .input-section {
+        flex-direction: row;
+        padding: 5px;
+    }
+
+    .chat-input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .send-btn {
+        padding: 8px;
+    }
+
+    /* 🎭 Pre-Screen Modal Adjustments */
+    .prescreen-container {
+        width: 95%; /* Adjust width to fit smaller screens */
+        padding: 15px;
+    }
+
+    /* 🧑‍🎨 Avatar Adjustments */
+    .avatar-section {
+        bottom: 5px;
+        left: 5px;
+        width: 40px;
+        height: 40px;
+    }
+
+    #avatar-display {
+        font-size: 30px;
+    }
+}
