@@ -145,45 +145,25 @@ def get_trending_cryptos():
         return []
 
 # ✅ AI-Powered Crypto Response Generator
-def get_ai_response(user_message, coin_data=None):
+def get_ai_response(user_message, chat_history=[]):
     """
     Generates an AI-driven response based on the user's query.
     If real-time data is available, it is included in the response.
     """
     try:
-        if coin_data:
-            ai_prompt = f"""
-            You are a cryptocurrency expert providing **real-time insights**.
-
-            **Crypto Update (Source: {coin_data['source']}):**
-            - **Price:** {coin_data['price']}
-            - **Market Cap:** {coin_data.get('market_cap', 'N/A')}
-            - **24h Volume:** {coin_data.get('24h_volume', 'N/A')}
-            - **24h Change:** {coin_data.get('24h_change', 'N/A')}
-
-            **User Query:** {user_message}
-
-            **Guidelines:**
-            - Provide **clear, confident, and actionable** responses.
-            - Always **use real-time data** when available.
-            - Avoid saying "I cannot fetch live data"; always provide the most recent available information.
-            """
-        else:
-            ai_prompt = f"""
-            You are an expert crypto assistant. Provide professional insights based on the latest data.
-
-            **User Query:** {user_message}
-            """
+        chat_history.append({"role": "user", "content": user_message})  # Append latest message
 
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are an expert in cryptocurrency markets."},
-                {"role": "user", "content": ai_prompt}
-            ]
+                {"role": "system", "content": "You are an expert in cryptocurrency markets."}
+            ] + chat_history  # Include full conversation history
         )
 
-        return response.choices[0].message.content.strip()
+        ai_response = response.choices[0].message.content.strip()
+        chat_history.append({"role": "assistant", "content": ai_response})  # Append AI response
+
+        return ai_response, chat_history  # Return AI response and updated history
 
     except openai.OpenAIError as e:
         return f"❌ OpenAI API Error: {str(e)}"
@@ -196,6 +176,10 @@ def handle_chat_query(user_message):
     Handles chatbot queries by determining if it's a price query, 
     a trending crypto request, or an AI-based response.
     """
+    if "history" not in globals():
+        global history
+        history = []  # Initialize history if not already set
+
     if "price of" in user_message.lower():
         asset = user_message.lower().split("price of")[-1].strip()
         crypto_data = get_crypto_data(asset)
@@ -210,4 +194,5 @@ def handle_chat_query(user_message):
         trending_coins = get_trending_cryptos()
         return f"🔥 **Trending Cryptos Today:** {', '.join(trending_coins)}"
 
-    return get_ai_response(user_message)
+    ai_response, history = get_ai_response(user_message, history)
+    return ai_response
