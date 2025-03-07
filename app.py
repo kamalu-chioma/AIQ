@@ -132,13 +132,25 @@ def get_ai_response(user_message, coin_data=None):
             **User Query:** {user_message}
             """
 
+        
+        chat_history = request.json.get("history", [])  # Retrieve past messages from request
+        chat_history.append({"role": "user", "content": user_message})  # Append new message
+        
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are an expert in cryptocurrency markets."},
-                {"role": "user", "content": ai_prompt}
-            ]
+                {"role": "system", "content": "You are an expert in cryptocurrency markets."}
+            ] + chat_history  # Include full chat history
         )
+
+
+        # response = openai.chat.completions.create(
+        #     model="gpt-3.5-turbo",
+        #     messages=[
+        #         {"role": "system", "content": "You are an expert in cryptocurrency markets."},
+        #         {"role": "user", "content": ai_prompt}
+        #     ]
+        # )
 
         return response.choices[0].message.content.strip()
 
