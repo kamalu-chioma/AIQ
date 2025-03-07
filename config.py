@@ -13,7 +13,7 @@ if not openai.api_key:
     raise ValueError("❌ Error: Missing OpenAI API Key! Please check your .env file.")
 
 # ✅ AI Response Function with Dynamic Data Handling
-def get_ai_response(user_message, coin_data=None):
+def get_ai_response(user_message, chat_history=[], coin_data=None):
     """
     Generates AI response using OpenAI's latest API syntax.
     If real-time coin data is available, it will be included in the AI prompt.
@@ -43,15 +43,19 @@ def get_ai_response(user_message, coin_data=None):
             **User Query:** {user_message}
             """
 
+        chat_history.append({"role": "user", "content": user_message})  # Append latest user message
+
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are an expert in cryptocurrency markets."},
-                {"role": "user", "content": ai_prompt}
-            ]
+                {"role": "system", "content": "You are an expert in cryptocurrency markets."}
+            ] + chat_history  # Include full conversation history
         )
 
-        return response.choices[0].message.content.strip()
+        ai_response = response.choices[0].message.content.strip()
+        chat_history.append({"role": "assistant", "content": ai_response})  # Append AI response
+
+        return ai_response, chat_history  # Return AI response and updated history
 
     except openai.OpenAIError as e:
         return f"❌ OpenAI API Error: {str(e)}"
