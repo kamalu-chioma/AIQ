@@ -302,7 +302,7 @@ body {
 /* } */
 @media screen and (max-width: 768px) {
     .prescreen-container {
-        width: 100%%;  
+        width: 100%;  
         max-width: none;  
         left: 50%;
         top: 50%;
