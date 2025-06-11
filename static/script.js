@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("✅ User already set up. Redirecting to main app...");
             window.location.href = "/main";
         }
+        
     }
 
     // Check if the main chat app exists (i.e. we are on main.html)
