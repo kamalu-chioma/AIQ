@@ -1,108 +1,384 @@
-/* Root layout */
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #000;
-  color: white;
-}
-
-/* App container */
-.app-container {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Sidebar (Chat History) */
-.sidebar {
-  width: 250px;
-  background: linear-gradient(to bottom, #1a001f, #4b004d);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar .chat-title {
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.chat-history {
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-.new-chat-btn {
-  margin-top: 1rem;
-}
-
-/* Chat area */
-.chat-container {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  background: linear-gradient(to right, #000, #4b004d);
-}
-
-.chat-header {
-  text-align: center;
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: #ccc;
-}
-
-.chat-messages {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 1rem;
-  background: #000;
-  border: 1px solid #555;
-  border-radius: 8px;
-}
-
-/* Chat input */
-.chat-input-container {
-  display: flex;
-  margin-top: 1rem;
-}
-
-.chat-input-container input[type="text"] {
-  flex-grow: 1;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 5px 0 0 5px;
-}
-
-.chat-input-container button {
-  padding: 0 1rem;
-  border: none;
-  background: #6a0dad;
-  color: white;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .app-container {
+/* 🌟 General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: black;  /* Set body background to black */
+    color: black;  /* Set text color to white */
+    transition: 0.3s;
+    margin: 0;
+    display: flex;
     flex-direction: column;
-  }
+    align-items: center;
+}
 
-  .sidebar {
+/* 📝 Chat Layout */
+.chat-container {
+    display: flex;
     width: 100%;
-    flex-direction: row;
+    height: 100vh;
+    max-width: 1400px;
+}
+
+/* 📂 Sidebar */
+.sidebar {
+    width: 25%;
+    background: linear-gradient(to right, 
+    #000000 0%, 
+    #000000 65%, 
+    #310b35 80%, 
+    #60096b 100%);
+
+    /* background: purple; */
+    color: white;
+    padding: 20px;
+    border-right: 1px solid #555;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+.sidebar h3 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Sidebar Chat History Items */
+.chat-item {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    overflow-x: auto;
-  }
+    background: #f8f8f8;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    transition: 0.3s;
+    border: 1px solid #ddd;
+}
 
-  .chat-container {
-    padding: 0.5rem;
-  }
+.chat-item:hover {
+    background: #e0e0e0;
+}
 
-  .chat-input-container input[type="text"] {
-    font-size: 0.9rem;
-  }
+/* Editable Chat Title */
+.chat-title-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 5px;
+    font-size: 14px;
+    outline: none;
+    font-weight: bold;
+    text-align: left;
+}
+
+/* Delete Chat Button */
+.delete-chat-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+    color: red;
+    transition: 0.2s;
+}
+
+.delete-chat-btn:hover {
+    color: darkred;
+    transform: scale(1.1);
+}
+
+/* 💬 Chat Area */
+.chat-box-wrapper {
+    width: 75%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: linear-gradient(to right, 
+    #000000 0%, 
+    #000000 85%, 
+    #29092c 90%, 
+    #60096b 100%);
+}
+
+/* ✏️ Editable Chat Title */
+.chat-title {
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-bottom: 2px solid purple;
+}
+
+/* 💡 Chat Messages */
+.chat-box {
+    flex-grow: 1;
+    overflow-y: auto;
+/*     padding: 15px;
+     */
+    background: #f5f5f5;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding-right: 0;
+    margin-right: 0;
+}
+
+/* 💬 Chat Input */
+.input-section {
+    display: flex;
+    margin-top: 10px;
+/*     align-items: center; */
+}
+
+.chat-input {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.send-btn {
+    padding: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.send-btn img {
+    width: 30px;
+}
+
+/* 🎭 Pre-Screen Modal */
+.prescreen-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.prescreen-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.proceed-btn {
+    background-color: purple;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.proceed-btn:hover {
+    background: #b40cd6;
+}
+
+
+/* 🧑‍🎨 Avatar Display */
+.avatar-section {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background: whitesmoke;
+    padding: 10px;
+    border-radius: 50%; /* Circular shape for avatar */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 10;
+    width: 45px;  /* Increased width for a larger avatar */
+    height: 45px; /* Ensure it’s square */
+}
+
+#avatar-display {
+    font-size: 36px;  /* Adjust the size for better visibility */
+    margin-top: 5px;
+    width: 40px;  /* Fixed width for images/emoji */
+    height: 40px; /* Fixed height to maintain circular shape */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-box {
+    max-height: 400px;
+    overflow-y: auto;
+    
+/*     padding: 10px;
+     */
+    background: linear-gradient(to right, 
+    #000000 0%, 
+    #000000 85%, 
+    #29092c 90%, 
+    #60096b 100%);
+/* new changes */
+    padding: 15px; /* Ensures inner padding */
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    margin-bottom: 10px;
+/*new changes */
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.message-bubble {
+    padding: 10px;
+    border-radius: 10px;
+/*     max-width: 75%;
+     */
+    word-wrap: break-word;
+/*     new code */
+    max-width: 95%; /* Ensures proper width */
+    word-wrap: break-word;
+}
+
+.message.user .message-bubble {
+    background-color: whitesmoke;
+    align-self: flex-end; /* Align user messages to the right */
+    text-align: right;
+    width:130%;
+}
+
+.message.bot .message-bubble {
+    background-color: whitesmoke;
+    align-self: flex-start; /* Align bot messages to the left */
+    text-align: left;
+/*     new changes
+     */
+    border-radius: 10px;
+    word-wrap: break-word;
+
+}
+
+.message-bubble strong {
+    font-weight: bold;
+}
+.sidebar-logo img {
+    width: 40px;
+    margin-top: 3px;
+}
+
+
+/* new changes */
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.bot {
+    justify-content: flex-start;
+}
+
+
+
+/* /* 🎯 Ensure Pre-Screen Modal is Centered on Mobile */
+/* @media screen and (max-width: 768px) {
+/*     .prescreen-container { */
+/*         width: 90%;  /* Ensure it doesn’t take full width */
+/*         max-width: 350px;  /* Limit maximum width */ 
+/*         left: 50%;
+        top: 50%; */ 
+/*         transform: translate(-50%, -50%);  /* Keep it centered */
+/*         padding: 20px; */
+/*         text-align: center; */ 
+    
+/* } */
+@media screen and (max-width: 768px) {
+    .prescreen-container {
+        width: 100%;  
+        max-width: none;  
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);  /* Add slight shadow for focus effect */
+        transition: transform 0.2s ease-in-out; /* Smooth animation for better user experience */
+    }
+
+
+/* media queries for phones and tablets for the main app (chatbot):  */
+@media screen and (max-width: 768px) {
+/*     body {
+        flex-direction: column;
+        align-items: stretch;
+    } */
+
+/*     .chat-container {
+        flex-direction: column;
+        height: auto;
+    } */
+
+    /* 📂 Sidebar Adjustments for Small Screens */
+/*     .sidebar {
+        width: 100%; 
+        height: auto;
+        padding: 15px;
+        text-align: center;
+    } */
+
+/*     .sidebar-logo img {
+        width: 30px; 
+    } */
+
+/*     .sidebar h3 {
+        font-size: 16px;
+    } */
+
+    /* 📝 Chat Box Adjustments */
+/*     .chat-box-wrapper {
+        width: 100%;
+        padding: 10px;
+        height: auto;
+    }
+
+    .chat-box {
+        max-height: 300px; 
+    }
+ */
+    /* 💬 Input Section Adjustments */
+/*     .input-section {
+        flex-direction: row;
+        padding: 5px;
+    }
+
+    .chat-input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .send-btn {
+        padding: 8px;
+    } */
+
+
+
+    /* 🧑‍🎨 Avatar Adjustments */
+/*     .avatar-section {
+        bottom: 5px;
+        left: 5px;
+        width: 40px;
+        height: 40px;
+    }
+
+    #avatar-display {
+        font-size: 30px;
+    } */
 }
