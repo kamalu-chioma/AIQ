@@ -129,8 +129,8 @@ function sendMessage() {
         headers: { "Content-Type": "application/json" }
     })
     .then(response => response.json())
-    .then(data => appendMessage("🤖", "Bot", data.response))
-    .catch(() => appendMessage("🤖", "Bot", "Sorry, something went wrong."));
+    .then(data => appendMessage("", "AIQ", data.response))
+    .catch(() => appendMessage("", "AIQ", "Sorry, something went wrong."));
 
     saveChatHistory();
 }
@@ -146,7 +146,7 @@ function appendMessage(avatar, sender, text) {
     // Set the message content with proper structure
     msgDiv.innerHTML = `
         <div class="message-bubble">
-            <strong>${avatar} ${sender}:</strong><br>${text}
+            <strong>${avatar} ${sender}</strong><br>${text}
         </div>
     `;
 
