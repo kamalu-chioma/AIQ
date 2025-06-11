@@ -220,8 +220,16 @@ body {
 }
 
 .chat-box {
-    max-height: 400px;
+/*     max-height: 400px;
+     */
+/*     overflow-y: auto;
+     */
+    flex-grow: 1;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    max-height: calc(100vh - 120px);
     
 /*     padding: 10px;
      */
