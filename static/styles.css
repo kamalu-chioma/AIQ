@@ -384,6 +384,22 @@ body {
     }
 
 
+    .avatar-section {
+    width: 30px;
+    height: 30px;
+    bottom: 5px;
+    left: 5px;
+    padding: 5px;
+  }
+
+  #avatar-display {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+
 /* media queries for phones and tablets for the main app (chatbot):  */
 @media screen and (max-width: 768px) {
 /*     body {
