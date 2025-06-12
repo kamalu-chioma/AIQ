@@ -322,5 +322,5 @@ document.getElementById("chat-title").addEventListener("input", function () {
 //             document.getElementById("eth-price").textContent = `$${data.ethereum}`;
 //         }
 //     });
-// }
+// //}
 
