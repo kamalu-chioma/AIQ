@@ -7,6 +7,38 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from datetime import datetime
+
+
+#Google search Logic
+SEARCH_COUNTER = {}
+
+def rate_limited():
+    today = datetime.today().strftime('%Y-%m-%d')
+    count = SEARCH_COUNTER.get(today, 0)
+    if count >= 97:
+        return True
+    SEARCH_COUNTER[today] = count + 1
+    return False
+
+def search_google(query):
+    if rate_limited():
+        return "⚠️ Search limit reached for today (97). Try again tomorrow."
+
+    response = requests.get(
+        "https://www.googleapis.com/customsearch/v1",
+        params={
+            "key": os.getenv("GOOGLE_API_KEY"),
+            "cx": os.getenv("SEARCH_ENGINE_ID"),
+            "q": query
+        }
+    )
+    data = response.json().get("items", [])
+    if not data:
+        return "❌ No results found."
+    top = data[0]
+    return f"🔍 **{top['title']}**\n{top['link']}\n\n{top['snippet']}"
+
 
 # ✅ Load environment variables
 load_dotenv()
