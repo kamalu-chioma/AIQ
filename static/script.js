@@ -45,6 +45,14 @@ function initializeApp() {
     if (chatApp) chatApp.classList.remove("hidden");
     if (avatarSection) avatarSection.classList.remove("hidden");
 
+
+    const input = document.getElementById("chat-input");
+    input.addEventListener("input", () => {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 100) + "px";
+    });
+
+
     loadChats();
     loadChatHistory();
     setAvatar();
