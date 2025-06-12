@@ -216,6 +216,10 @@ def handle_chat_query(user_message):
     if user_message.lower().startswith("search ") or "search for" in user_message.lower():
         query = user_message.lower().replace("search", "").strip()
         return search_google(query)
+        if "❌" in result or "⚠️" in result:
+            fallback_response, history = get_ai_response(f"Try to answer this instead: {user_message}", history)
+            return result + "\n\n💡 Here's an attempt to help anyway:\n" + fallback_response
+        return result
 
     if "price of" in user_message.lower():
         asset = user_message.lower().split("price of")[-1].strip()
