@@ -52,6 +52,11 @@ function initializeApp() {
     input.style.height = Math.min(input.scrollHeight, 100) + "px";
     });
 
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        document.querySelector('.sidebar').classList.toggle('open');
+    });
+
+
 
     loadChats();
     loadChatHistory();
