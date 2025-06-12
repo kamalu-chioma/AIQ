@@ -183,8 +183,16 @@ def chat():
         trending_coins = get_trending_cryptos()
         return jsonify({"response": f"🔥 **Trending Cryptos Today:** {', '.join(trending_coins)}"})
 
+    # ✅ Web search: explicit or smart trigger
+    search_keywords = ["latest", "news", "update", "regulation", "happening", "event", "report", "headline"]
+    if user_message.lower().startswith("search ") or any(k in user_message.lower() for k in search_keywords):
+        from chatbot import search_google
+        query = user_message.replace("search", "").strip()
+        return jsonify({"response": search_google(query)})
+
+
     ai_response = get_ai_response(user_message)
-    print(f"🤖 Bot Response: {ai_response}") 
+    print(f" Bot Response: {ai_response}") 
     return jsonify({"response": ai_response})
 
 # ✅ Real-time Price Updates Every 10 Seconds
