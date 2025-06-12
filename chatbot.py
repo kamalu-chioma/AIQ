@@ -212,6 +212,11 @@ def handle_chat_query(user_message):
         global history
         history = []  # Initialize history if not already set
 
+        # ✅ Web Search Handling
+    if user_message.lower().startswith("search ") or "search for" in user_message.lower():
+        query = user_message.lower().replace("search", "").strip()
+        return search_google(query)
+
     if "price of" in user_message.lower():
         asset = user_message.lower().split("price of")[-1].strip()
         crypto_data = get_crypto_data(asset)
