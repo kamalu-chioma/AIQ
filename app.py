@@ -162,71 +162,72 @@ def get_ai_response(user_message, coin_data=None):
 # ✅ Chat Route for AI-Powered Crypto Responses
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_message = request.json.get("message", "")
+    user_message = request.json.get("message")
     if not user_message:
         return jsonify({"error": "Message is required"}), 400
 
     print(f"🟢 Received Message: {user_message}")
-    user_lower = user_message.lower()
 
-    # Explicit price check
-    if "price of" in user_lower:
-        asset = user_lower.split("price of")[-1].strip()
+    if "price of" in user_message.lower():
+        asset = user_message.lower().split("price of")[-1].strip()
         crypto_data = get_crypto_data(asset)
-        if crypto_data:
-            return jsonify({
-                "response": f"📈 **{asset.upper()} Price:** {crypto_data['price']}\n"
-                            f"💰 **Market Cap:** {crypto_data.get('market_cap', 'N/A')}\n"
-                            f"🔄 **24h Volume:** {crypto_data.get('24h_volume', 'N/A')}\n"
-                            f"📊 **24h Change:** {crypto_data.get('24h_change', 'N/A')}"
-            })
 
-    # Trending cryptos
-    if any(keyword in user_lower for keyword in ["trending cryptos", "top cryptos", "most sold cryptos"]):
+        if crypto_data:
+            return jsonify({"response": f"📈 **{asset.upper()} Price:** {crypto_data['price']}\n"
+                                        f"💰 **Market Cap:** {crypto_data.get('market_cap', 'N/A')}\n"
+                                        f"🔄 **24h Volume:** {crypto_data.get('24h_volume', 'N/A')}\n"
+                                        f"📊 **24h Change:** {crypto_data.get('24h_change', 'N/A')}"})
+
+
+    if any(keyword in user_message.lower() for keyword in ["trending cryptos", "top cryptos", "most sold cryptos"]):
         trending_coins = get_trending_cryptos()
         return jsonify({"response": f"🔥 **Trending Cryptos Today:** {', '.join(trending_coins)}"})
 
-    # Smart search trigger
+    # ✅ Web search: explicit or smart trigger
     search_keywords = ["latest", "news", "update", "regulation", "happening", "event", "report", "headline"]
-    if user_lower.startswith("search ") or any(k in user_lower for k in search_keywords):
-        query = user_lower.replace("search", "").strip()
+    if user_message.lower().startswith("search ") or any(k in user_message.lower() for k in search_keywords):
+        from chatbot import search_google
+        query = user_message.replace("search", "").strip()
         return jsonify({"response": search_google(query)})
 
-    # Forecast / price prediction
+        # Forecast and price prediction queries
     if any(phrase in user_lower for phrase in [
-        "predict price of", "price forecast for", "expected price of",
-        "future price of", "price prediction for", "where is", "headed",
+        "predict price of",
+        "price forecast for",
+        "expected price of",
+        "future price of",
+        "price prediction for",
+        "where is", "headed",
         "is", "going up", "going down"
     ]):
-        forecast_keywords = [
-            "predict price of", "price forecast for", "expected price of",
-            "future price of", "price prediction for"
-        ]
+        forecast_keywords = ["predict price of", "price forecast for", "expected price of",
+                             "future price of", "price prediction for"]
         query = user_message
         for keyword in forecast_keywords:
             if keyword in user_lower:
-                query = user_lower.replace(keyword, "").strip() + " crypto price prediction"
+                query = user_message.lower().replace(keyword, "").strip() + " crypto price prediction"
                 break
-        return jsonify({"response": search_google(query)})
+        return search_google(query)
 
-    # Fallback search for variations of price inquiries
+    # Explicit "price of" or "what is the price of" query — direct fallback to search
     if user_lower.startswith("price of "):
         query = user_message[9:].strip() + " price today"
-        return jsonify({"response": search_google(query)})
+        return search_google(query)
 
     if user_lower.startswith("what is the price of "):
         query = user_message[22:].strip() + " price today"
-        return jsonify({"response": search_google(query)})
+        return search_google(query)
 
     if user_lower.startswith("price "):
         query = user_message[6:].strip() + " price today"
-        return jsonify({"response": search_google(query)})
+        return search_google(query)
 
-    # Default to OpenAI response
+
+
+
     ai_response = get_ai_response(user_message)
-    print(f"🤖 Bot Response: {ai_response}")
+    print(f" Bot Response: {ai_response}") 
     return jsonify({"response": ai_response})
-
 
 # ✅ Real-time Price Updates Every 10 Seconds
 def live_price_updates():
