@@ -190,6 +190,40 @@ def chat():
         query = user_message.replace("search", "").strip()
         return jsonify({"response": search_google(query)})
 
+        # Forecast and price prediction queries
+    if any(phrase in user_lower for phrase in [
+        "predict price of",
+        "price forecast for",
+        "expected price of",
+        "future price of",
+        "price prediction for",
+        "where is", "headed",
+        "is", "going up", "going down"
+    ]):
+        forecast_keywords = ["predict price of", "price forecast for", "expected price of",
+                             "future price of", "price prediction for"]
+        query = user_message
+        for keyword in forecast_keywords:
+            if keyword in user_lower:
+                query = user_message.lower().replace(keyword, "").strip() + " crypto price prediction"
+                break
+        return search_google(query)
+
+    # Explicit "price of" or "what is the price of" query — direct fallback to search
+    if user_lower.startswith("price of "):
+        query = user_message[9:].strip() + " price today"
+        return search_google(query)
+
+    if user_lower.startswith("what is the price of "):
+        query = user_message[22:].strip() + " price today"
+        return search_google(query)
+
+    if user_lower.startswith("price "):
+        query = user_message[6:].strip() + " price today"
+        return search_google(query)
+
+
+
 
     ai_response = get_ai_response(user_message)
     print(f" Bot Response: {ai_response}") 
