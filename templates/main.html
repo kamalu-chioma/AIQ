@@ -29,46 +29,31 @@
 
         <!-- Chat Section -->
         <div class="chat-box-wrapper">
-            <!-- Editable Chat Title with Pencil Icon -->
-<!--             <h2>
-                <span id="chat-title-span">
-                    <input type="text" id="chat-title" class="chat-title" value="New Chat" disabled />
-                </span>
-                <button id="edit-title-btn" onclick="editChatTitle()" class="edit-title-btn">
-                    <i class="fas fa-pencil-alt"></i>  <!-- Pencil icon to edit -->
-<!--                 </button>
-            </h2> --> 
-
-            <!-- Add at top of chat-box-wrapper -->
-            <button id="sidebar-toggle" class="sidebar-toggle">
-              ☰
-            </button>
-
+            <div class="chat-header">
+                <button id="sidebar-toggle" class="sidebar-toggle">☰</button>
+                <div class="chat-heading">
+                    <p class="eyebrow">AIQ Assistant</p>
+                    <h2>Conversation</h2>
+                </div>
+            </div>
 
             <!-- Chat Box -->
             <div class="chat-box" id="chat-box"></div>
-            <br> <br>
 
             <!-- Chat Input & Send Button -->
             <div class="input-section">
-
                 <textarea id="chat-input" class="chat-input" rows="1" placeholder="Ask AIQ..."></textarea>
                 <button class="send-btn" onclick="sendMessage()">
-<!--                     <i class="fa-regular fa-paper-plane" style="font-size: 2em;"></i>
- -->
-<!--                     <i class="fas fa-paper-plane"></i>  
-                     -->
-                         <i class="far fa-paper-plane" style="font-size: 2em; transform: rotate(20deg);"></i>
-
+                    <i class="far fa-paper-plane" style="font-size: 1.4em;"></i>
                 </button>
             </div>
-            
-            
+        </div>
+    </div>
 
     <div class="avatar-section hidden" id="avatar-section">
         <div id="avatar-display">👤</div>  <!-- Keep the avatar emoji unchanged -->
     </div>
-    
+
 
 </body>
 </html>
